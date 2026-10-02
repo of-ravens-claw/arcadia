@@ -6,7 +6,7 @@ public record ArcadiaSettings
 {
     public string ListenAddress { get; init; } = System.Net.IPAddress.Loopback.ToString();
     public string? TheaterAddress { get; init; }
-    public string? MessengerAddress { get; init; }
+    public string? MessengerAddress { get; init; } = "messaging.ea.com";
 
     public int[] ListenPorts { get; init; } = [
         (int)TheaterGamePort.RomePS3,
@@ -16,6 +16,9 @@ public record ArcadiaSettings
         (int)FeslGamePort.MoHAirborne,
         (int)FeslGamePort.LotrConquest,
         (int)FeslGamePort.CNCRA3,
+        (int)FeslGamePort.NfsCarbonPC,
+        (int)FeslGamePort.NfsCarbon360,
+        (int)FeslGamePort.NfsCarbonPS3,
     ];
 
     public int MessengerPort { get; init; } = 42069;

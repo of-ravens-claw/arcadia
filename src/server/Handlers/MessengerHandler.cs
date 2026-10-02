@@ -69,10 +69,11 @@ public class MessengerHandler
 
         var response = new Dictionary<string, string>
         {
-            ["TTID"] = "0",
-            ["TITL"] = "A Game",
+            ["TIID"] = "0",
+            //["TITL"] = "A Game",
+            ["TITL"] = "Need for Speed Carbon",
             ["ID"] = request["ID"],
-            ["USER"] = $"{request["USER"]}@messaging.ea.com/eagames{partitionId}"
+            ["USER"] = $"{request["USER"]}@messaging.ea.com{partitionId}"
         };
 
         var packet = new Packet(request.Type, TheaterTransmissionType.OkResponse, 0, response);

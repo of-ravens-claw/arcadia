@@ -19,3 +19,4 @@ dumps/*
 **/messageId
 **/arcadia.db*
 ip-to-country.mmdb
+/.vs

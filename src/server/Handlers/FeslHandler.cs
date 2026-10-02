@@ -169,23 +169,46 @@ public class FeslHandler
     private async Task HandleHello(Packet request)
     {
         clientString = request["clientString"];
-        subDomain = clientString.Split('-').First().ToUpperInvariant();
-        partitionId = $"/{request["sku"]}/{subDomain}";
+
+        switch (clientString)
+        {
+            case "nfs-pc":
+                partitionId = "/EAGAMES/NFS-2007";
+                subDomain = "eagames";
+                break;
+
+            case "nfs-360":
+                partitionId = "/XBL2/NFS-2007";
+                subDomain = "xbl2"; // guessed
+                break;
+
+            case "nfs-ps3":
+                partitionId = "/PS3/NFS-2007";
+                subDomain = "ps3";
+                break;
+
+            default:
+                partitionId = $"/{request["sku"]}/{subDomain}";
+                subDomain = clientString.Split('-').First().ToUpperInvariant();
+                break;
+        }
 
         const string hostName = "theater.ps3.arcadia";
+
+        string theaterAddress = $"{clientString}.theater.ea.com";
 
         var currentTime = DateTime.UtcNow.ToString("MMM-dd-yyyy HH:mm:ss 'UTC'", CultureInfo.InvariantCulture);
         var serverHelloData = new Dictionary<string, string>
                 {
                     { "domainPartition.domain", request["sku"] },
                     { "messengerIp", _settings.Value.MessengerAddress ?? hostName },
-                    { "messengerPort", $"{_settings.Value.MessengerPort}" },
+                    { "messengerPort", $"{_settings.Value.MessengerPort}" }, // 13505 in my logs of Carbon PC
                     { "domainPartition.subDomain", subDomain },
                     { "TXN", "Hello" },
                     { "activityTimeoutSecs", "0" },
                     { "curTime", currentTime },
-                    { "theaterIp", _settings.Value.TheaterAddress ?? hostName },
-                    { "theaterPort", $"{DefaultTheaterPort}" }
+                    { "theaterIp", theaterAddress },
+                    { "theaterPort", $"{DefaultTheaterPort}" } // 18215 on PC, 18235 on PS3 (Carbon)
                 };
 
         if (request["clientString"].StartsWith("skate2"))
@@ -749,7 +772,7 @@ public class FeslHandler
         var packet = new Packet(request.Type, FeslTransmissionType.SinglePacketResponse, request.Id, loginResponseData);
         await _conn.SendPacket(packet);
     }
-    
+
     private async Task HandleNuLoginPersona(Packet request)
     {
         var loginResponseData = new Dictionary<string, string>
@@ -774,7 +797,7 @@ public class FeslHandler
         };
 
         var groupName = request["groupName"];
-        switch(groupName)
+        switch (groupName)
         {
             case "BFBC2PS3":
                 response.AddEntitlements(_session.User.UserId, [
@@ -821,7 +844,7 @@ public class FeslHandler
         await _conn.SendPacket(packet);
     }
 
-    // BC1, AO2
+    // BC1, AO2, NFSC
     private async Task HandlePs3Login(Packet request)
     {
         var ticketPayload = request["ticket"];

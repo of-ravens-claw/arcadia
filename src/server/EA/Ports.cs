@@ -10,7 +10,9 @@ public enum FeslGamePort : int
     ArmyOfTwoPS3 = 18340,
     ArmyOfTwo2PS3 = 18141,
     NfsShift = 18221,
-    NfsCarbon = 18230,
+    NfsCarbonPC = 18210,
+    NfsCarbon360 = 18220,
+    NfsCarbonPS3 = 18230,
     NfsUndercover = 18930,
     NfsProStreet = 18600,
     TeamFortress2 = 18450,
@@ -29,7 +31,10 @@ public enum TheaterGamePort : int
     BadCompanyPS3 = 18805,
     RomePS3 = 18126,
     BeachPS3 = 18236,
-    RomePC = 18395
+    RomePC = 18395,
+    NfsCarbonPC = 18215,
+    NfsCarbon360 = 18225,
+    NfsCarbonPS3 = 18235,
 }
 
 public enum FeslServerPort : int
